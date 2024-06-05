@@ -1,6 +1,6 @@
 {
   "name": "ts-boilerplatex",
-  "version": "1.0.7",
+  "version": "2.0.7",
   "description": "TS-BoilerplateX is a meticulously crafted boilerplate tailored for developers seeking a seamless starting point for building powerful web applications with TypeScript and Express.js. With TS-BoilerplateX, harness the combined benefits of TypeScript's static typing and Express.js' flexibility to expedite your development process while ensuring code integrity and maintainability.",
   "main": "main.js",
   "bin": {
@@ -45,15 +45,15 @@
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^18.17.0",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
-    "esbuild": "^0.20.2",
-    "eslint": "^8.57.0",
-    "nodemon": "^3.1.0",
+    "@types/node": "^20.14.2",
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
+    "@typescript-eslint/parser": "^7.12.0",
+    "esbuild": "^0.21.4",
+    "eslint": "^9.4.0",
+    "nodemon": "^3.1.3",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.12",
-    "typescript": "^4.9.0"
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -61,7 +61,7 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "directories": {
     "doc": "docs"

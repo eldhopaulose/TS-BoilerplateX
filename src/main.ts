@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { createServer } from "./bin/server";
 
 import indexRouter from "./routes/index";
+import { errorHandler } from "./middlewares/errorHandler";
 
 //initialize express app
 const app = express();
@@ -27,5 +28,7 @@ app.use(cookieParser());
 
 // This line mounts the indexRouter at the root path of the app.
 app.use("/", indexRouter);
+// This line mounts the errorHandler middleware at the end of the app.
+app.use(errorHandler);
 
 createServer(app);

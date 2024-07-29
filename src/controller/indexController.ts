@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 
 const indexController = (_req: Request, res: Response) => {
-  res.send("Welcome to the TS-BoilerplateX!");
+  const data = [{ id: 1, name: "Example" }];
+  res.apiResponse("Data fetched successfully", true, 200, data);
 };
 // Example route
 

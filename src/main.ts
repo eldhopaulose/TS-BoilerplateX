@@ -7,6 +7,7 @@ import { createServer } from "./bin/server";
 
 import indexRouter from "./routes/index";
 import { errorHandler } from "./middlewares/errorHandler";
+import { apiResponseMiddleware } from "./middlewares/apiResponseMiddleware ";
 
 //initialize express app
 const app = express();
@@ -25,6 +26,9 @@ app.use(compression());
 
 // This line sets up cookieParser middleware to parse cookies attached to incoming requests.
 app.use(cookieParser());
+
+// This line mounts the apiResponseMiddleware middleware at the end of the app.
+app.use(apiResponseMiddleware);
 
 // This line mounts the indexRouter at the root path of the app.
 app.use("/", indexRouter);

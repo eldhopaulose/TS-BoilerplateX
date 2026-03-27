@@ -9,3 +9,8 @@
 .DS_Store
 coverage
 *.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local

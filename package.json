@@ -1,23 +1,27 @@
 {
   "name": "ts-boilerplatex",
-  "version": "2.0.7",
+  "version": "3.0.0",
   "description": "TS-BoilerplateX is a meticulously crafted boilerplate tailored for developers seeking a seamless starting point for building powerful web applications with TypeScript and Express.js. With TS-BoilerplateX, harness the combined benefits of TypeScript's static typing and Express.js' flexibility to expedite your development process while ensuring code integrity and maintainability.",
   "main": "main.js",
   "bin": {
     "TS-BoilerplateX": "bin/cli.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "scripts": {
     "clean": "rimraf dist build package docs",
     "dev": "nodemon",
     "start": "ts-node src/main.ts",
     "production": "node dist/main.js",
-    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "test": "jest",
     "ts-node": "ts-node",
     "docs": "typedoc --entryPoints src/main.ts",
     "build": "tsc -p tsconfig.json",
     "esbuild-node": "esbuild src/main.ts --bundle --platform=node --outdir=dist/node",
-    "build-all": "yarn clean && yarn build && yarn esbuild-node "
+    "build-all": "npm run clean && npm run build && npm run esbuild-node"
   },
   "repository": {
     "type": "git",
@@ -27,13 +31,18 @@
     "ts",
     "typescript",
     "express",
+    "express5",
+    "boilerplate",
     "framework",
     "web",
     "rest",
     "restful",
     "router",
-    "app",
-    "api"
+    "api",
+    "pino",
+    "zod",
+    "rate-limiting",
+    "helmet"
   ],
   "author": "Eldho Paulose",
   "license": "Apache-2.0",
@@ -42,29 +51,33 @@
   },
   "homepage": "https://github.com/eldhopaulose/TS-BoilerplateX#readme",
   "devDependencies": {
-    "@types/body-parser": "^1.19.5",
-    "@types/compression": "^1.7.5",
-    "@types/cookie-parser": "^1.4.7",
-    "@types/express": "^4.17.21",
-    "@types/morgan": "^1.9.9",
-    "@types/node": "^20.14.2",
-    "@typescript-eslint/eslint-plugin": "^7.12.0",
-    "@typescript-eslint/parser": "^7.12.0",
-    "esbuild": "^0.21.4",
-    "eslint": "^9.4.0",
-    "nodemon": "^3.1.3",
-    "rimraf": "^5.0.7",
+    "@types/compression": "^1.8.1",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "esbuild": "^0.27.4",
+    "eslint": "^10.1.0",
+    "nodemon": "^3.1.14",
+    "rimraf": "^6.1.3",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.13",
-    "typescript": "^5.4.5"
+    "typedoc": "^0.28.18",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.2"
   },
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.6",
-    "express": "^4.19.2",
-    "morgan": "^1.10.0",
-    "tslib": "^2.6.3"
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
+    "helmet": "^8.1.0",
+    "pino": "^10.3.1",
+    "pino-pretty": "^13.1.3",
+    "tslib": "^2.8.1",
+    "uuid": "^13.0.0",
+    "zod": "^4.3.6"
   },
   "directories": {
     "doc": "docs"

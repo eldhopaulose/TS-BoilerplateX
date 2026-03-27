@@ -93,27 +93,33 @@ The server will start at `http://localhost:3000` with hot-reload enabled.
 TS-BoilerplateX/
 ├── src/
 │   ├── bin/
-│   │   └── server.ts           # HTTP server creation & lifecycle
+│   │   └── server.ts              # HTTP server creation & lifecycle
 │   ├── controller/
-│   │   └── indexController.ts   # Route handler logic
+│   │   ├── indexController.ts     # Root route handler (API index)
+│   │   └── userController.ts      # User CRUD handlers with logging
 │   ├── middleware/
-│   │   ├── index.ts             # Barrel export for all middleware
-│   │   ├── rateLimiter.ts       # Global & strict rate limiters
-│   │   ├── requestId.ts         # UUID-based request ID tracking
-│   │   └── validate.ts          # Zod schema validation middleware
+│   │   ├── index.ts               # Barrel export for all middleware
+│   │   ├── rateLimiter.ts         # Global & strict rate limiters
+│   │   ├── requestId.ts           # UUID-based request ID tracking
+│   │   └── validate.ts            # Zod schema validation middleware
+│   ├── models/
+│   │   └── user.model.ts          # User data model (in-memory store)
 │   ├── routes/
-│   │   ├── health.ts            # Health check endpoint
-│   │   └── index.ts             # Application routes
+│   │   ├── health.ts              # Health check endpoint
+│   │   ├── index.ts               # Root routes
+│   │   └── user.routes.ts         # User CRUD routes with validation
+│   ├── schemas/
+│   │   └── user.schema.ts         # Zod validation schemas for User API
 │   ├── types/
-│   │   └── express.d.ts         # Express type augmentations
+│   │   └── express.d.ts           # Express type augmentations
 │   ├── utils/
-│   │   └── logger.ts            # Pino logger configuration
-│   └── main.ts                  # Application entry point
-├── .env.example                 # Environment variable template
-├── eslint.config.mjs            # ESLint 10 flat config
-├── nodemon.json                 # Development server config
+│   │   └── logger.ts              # Pino logger configuration
+│   └── main.ts                    # Application entry point
+├── .env.example                   # Environment variable template
+├── eslint.config.mjs              # ESLint 10 flat config
+├── nodemon.json                   # Development server config
 ├── package.json
-├── tsconfig.json                # TypeScript compiler config
+├── tsconfig.json                  # TypeScript compiler config
 └── README.md
 ```
 
@@ -133,6 +139,148 @@ TS-BoilerplateX/
 | `npm run test` | Run tests with Jest |
 | `npm run docs` | Generate API docs with TypeDoc |
 | `npm run clean` | Remove build artifacts |
+
+---
+## 🎯 Example API — User CRUD
+
+The boilerplate ships with a **fully working User CRUD API** that demonstrates all features. Start the server and try:
+
+### 📍 Endpoints
+
+| Method | Endpoint | Description | Features Used |
+|---|---|---|---|
+| `GET` | `/` | API index (lists all routes) | — |
+| `GET` | `/api/health` | Health check | Memory stats, uptime |
+| `GET` | `/api/users` | List all users (paginated) | Zod query validation |
+| `GET` | `/api/users/stats` | User statistics | Aggregation |
+| `GET` | `/api/users/:id` | Get user by ID | Zod UUID validation |
+| `POST` | `/api/users` | Create a user | Zod body validation, strict rate limit |
+| `PUT` | `/api/users/:id` | Update a user | Zod partial validation |
+| `DELETE` | `/api/users/:id` | Delete a user | Strict rate limit |
+
+### 🧪 Try it with cURL
+
+**1. List all users (with pagination & filtering):**
+```bash
+curl http://localhost:3000/api/users?page=1&limit=10
+
+# Filter by role
+curl http://localhost:3000/api/users?role=admin
+
+# Filter by active status
+curl http://localhost:3000/api/users?isActive=true
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "name": "Eldho Paulose",
+      "email": "eldho@example.com",
+      "age": 28,
+      "role": "admin",
+      "isActive": true,
+      "createdAt": "2026-03-27T12:00:00.000Z",
+      "updatedAt": "2026-03-27T12:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "total": 3,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 1,
+    "hasNextPage": false,
+    "hasPrevPage": false
+  }
+}
+```
+
+**2. Create a new user:**
+```bash
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "age": 30,
+    "role": "moderator"
+  }'
+```
+
+**Response (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "age": 30,
+    "role": "moderator",
+    "isActive": true,
+    "createdAt": "2026-03-27T12:01:00.000Z",
+    "updatedAt": "2026-03-27T12:01:00.000Z"
+  }
+}
+```
+
+**3. Validation error example (missing required fields):**
+```bash
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "A"}'
+```
+
+**Response (422):**
+```json
+{
+  "error": "Validation Error",
+  "details": [
+    { "field": "body.name", "message": "Name must be at least 2 characters" },
+    { "field": "body.email", "message": "Required" },
+    { "field": "body.age", "message": "Required" }
+  ]
+}
+```
+
+**4. Update a user:**
+```bash
+curl -X PUT http://localhost:3000/api/users/<user-id> \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Alice Smith", "age": 31}'
+```
+
+**5. Delete a user:**
+```bash
+curl -X DELETE http://localhost:3000/api/users/<user-id>
+```
+
+**6. Get user statistics:**
+```bash
+curl http://localhost:3000/api/users/stats
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "total": 3,
+    "active": 2,
+    "inactive": 1,
+    "byRole": { "admin": 1, "user": 1, "moderator": 1 },
+    "averageAge": 28
+  }
+}
+```
+
+**7. Health check:**
+```bash
+curl http://localhost:3000/api/health
+```
 
 ---
 

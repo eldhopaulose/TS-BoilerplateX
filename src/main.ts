@@ -13,6 +13,7 @@ import logger from "./utils/logger";
 
 import indexRouter from "./routes/index";
 import healthRouter from "./routes/health";
+import userRouter from "./routes/user.routes";
 
 // ─── Initialize Express App ─────────────────────────────────────────────────
 const app = express();
@@ -42,6 +43,7 @@ app.use(cookieParser());
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use("/", indexRouter);
 app.use("/api", healthRouter);
+app.use("/api/users", userRouter);
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((_req: express.Request, res: express.Response) => {
